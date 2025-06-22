@@ -17,7 +17,7 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 WORKDIR /app
 
 # 5. Install dependencies
-COPY package*.json ./
+COPY package.json package-lock.json ./
 RUN npm ci
 
 # 6. Copy application source
