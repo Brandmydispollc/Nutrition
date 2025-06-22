@@ -2,6 +2,7 @@
 const express   = require('express');
 const puppeteer = require('puppeteer');
 const path      = require('path');
+const fs        = require('fs');
 
 const app = express();
 app.use(express.json({ limit: '1mb' }));
@@ -17,9 +18,27 @@ app.post('/api/pdf', async (req, res) => {
     console.log('Puppeteer executablePath():', puppeteer.executablePath());
     console.log('PUPPETEER_CACHE_DIR env:', process.env.PUPPETEER_CACHE_DIR);
 
-    // On Render, use the system’s Chrome install
+    // Auto-detect Chrome/Chromium binary path
+    const chromePaths = [
+      process.env.CHROME_PATH,
+      '/usr/bin/google-chrome-stable',
+      '/usr/bin/chromium-browser',
+      '/usr/bin/chromium'
+    ].filter(Boolean);
+
+    let executablePath = null;
+    for (const p of chromePaths) {
+      if (fs.existsSync(p)) {
+        executablePath = p;
+        break;
+      }
+    }
+    if (!executablePath) {
+      throw new Error('Chrome binary not found in any of the expected paths: ' + chromePaths.join(', '));
+    }
+
     const browser = await puppeteer.launch({
-      executablePath: '/usr/bin/google-chrome-stable',
+      executablePath,
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
     });
     const page    = await browser.newPage();
