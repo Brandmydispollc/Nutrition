@@ -34,4 +34,7 @@ app.post('/api/pdf', async (req, res) => {
   res.type('application/pdf').send(pdfBuffer);
 });
 
-app.listen(4000, () => console.log('PDF service → http://localhost:4000/api/pdf'));
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`PDF service -> http://localhost:${PORT}/api/pdf`);
+});
