@@ -14,7 +14,10 @@ app.post('/api/pdf', async (req, res) => {
     const { html } = req.body;
     if (!html) return res.status(400).send('Missing HTML');
 
-    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+    const browser = await puppeteer.launch({
+      executablePath: process.env.CHROME_PATH || '/usr/bin/chromium-browser',
+      args: ['--no-sandbox']
+    });
     const page    = await browser.newPage();
     await page.setContent(html, { waitUntil: 'networkidle0' });
 
