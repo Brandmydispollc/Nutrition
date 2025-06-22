@@ -70,6 +70,9 @@ app.post('/api/pdf', async (req, res) => {
   }
 });
 
+
+app.get('/healthz', (_req, res) => res.sendStatus(200));
+
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`PDF service -> http://localhost:${PORT}/api/pdf`);
