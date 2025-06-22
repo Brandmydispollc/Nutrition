@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nutrition Label Input Form</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ─── self-hosted Helvetica clone (TeX Gyre Heros) ─────────── */
+    @font-face{
+    font-family:"HelveticaWeb";
+    src:url("fonts/helvetica.woff2") format("woff2");
+    font-weight:400;
+    font-style:normal;
+    font-display:swap;
+    }
+    @font-face {
+    font-family: "Work Sans ExtraBold";
+    src: url("fonts/WorkSans-ExtraBold.woff2") format("woff2");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+    }
+    
+    :root {
+      --font-sans: 'Inter', sans-serif;
+      --color-accent: #7599ff;
+      --color-text: #333;
+      --color-bg: #f7f8fa;
+      --spacing-unit: 1rem;
+      --radius: 4px;
+    }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      margin: var(--spacing-unit);
+    }
+
+    html, body {
+      -webkit-text-size-adjust: 100%;
+              text-size-adjust: 100%;
+    }
+    .form-card {
+      max-width: 900px;
+      margin: 0 auto var(--spacing-unit);
+      background: #fff;
+      padding: calc(var(--spacing-unit) * 1.5);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 500;
+    }
+    input[type="text"], input[type="number"], select {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: var(--radius);
+      box-sizing: border-box;
+    }
+    input:focus, select:focus {
+      border-color: var(--color-accent);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(117,153,255,0.3);
+    }
+    button {
+      background-color: var(--color-accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: #5072cc;
+    }
+    fieldset {
+      border: 1px solid #ddd;
+      padding: var(--spacing-unit);
+      margin-bottom: var(--spacing-unit);
+      border-radius: var(--radius);
+    }
+    legend {
+      padding: 0 0.5rem;
+      font-weight: 600;
+      color: var(--color-accent);
+    }
+    /* Responsive grid for Calories & Macronutrients */
+    #nutrition-form > fieldset:nth-of-type(2) {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: var(--spacing-unit);
+    }
+    /* Ensure the legend spans full width */
+    #nutrition-form > fieldset:nth-of-type(2) > legend {
+      grid-column: 1 / -1;
+    }
+    /* Restore default bottom margin for form groups inside this grid */
+    #nutrition-form > fieldset:nth-of-type(2) .form-group {
+      margin-bottom: var(--spacing-unit);
+    }
+    .label-card {
+      max-width: 260px;
+      margin: 0 auto var(--spacing-unit);
+      padding: var(--spacing-unit);
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border-radius: var(--radius);
+    }
+    /* Four-column grid for required vitamins */
+    #vitamin-fields {
+      display: grid !important;
+      grid-column: 1 / -1;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+    /* Four-column grid for optional vitamin inputs */
+    #optional-vitamin-fields {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+/* ─────────────────────────────────────────────────────────────────────────────
+   BEGIN: “Classic” Nutrition Facts CSS (from original example)
+───────────────────────────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+  .label {
+    font-family: "HelveticaWeb", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    border: 2px solid black;
+    width: 270px;
+    margin: 20px auto;
+    padding: 8px 7px 4px 7px;
+    color: black;
+    /* keep same appearance on all viewports */
+    width: 270px;                       /* fixed printable width */
+    -webkit-text-size-adjust: 100%;     /* stop text inflation on iOS/Android */
+            text-size-adjust: 100%;
+  }
+  .label header {
+    text-align: center;
+  }
+header h1 {
+  display: block;
+  max-width: 100%;
+  margin: -4px auto 0 auto;
+  font-family: "Work Sans ExtraBold", sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.1px; /* subtle extra tracking to align perfectly */
+  font-size: 34px;       /* fills the 270 px width more fully */
+  white-space: nowrap;
+  line-height: 1.1;
+}
+
+.label header p.bold {
+  margin-bottom: 2px;
+}
+
+
+.label p {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Keep single‑line layout only where the line has <span> elements;
+   allow plain paragraphs (notes) to wrap naturally. */
+.label header p,
+.label .daily-value p > span {
+  white-space: nowrap;
+}
+
+.divider {
+  border-bottom: 1px solid #888989;
+  margin: 0;
+}
+
+  .bold {
+    font-family: "Work Sans ExtraBold", sans-serif;
+    font-weight: 800;
+  }
+
+.large {
+  height: 10px;
+  background-color: black;
+  border: 0;
+}
+
+.medium {
+  height: 5px;
+  background-color: black;
+  border: 0;
+}
+
+.small-text {
+  font-size: 0.85rem;
+}
+
+.calories-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.calories-info h2 {
+  margin: 0;
+}
+
+  .left-container p {
+    margin: -5px -2px;
+    font-size: 2em;
+    font-weight: 700;
+    font-family: inherit;
+  }
+
+  .calories-info span {
+    margin: -7px -2px;
+    font-size: 2.4em;
+    font-weight: 700;
+    font-family: inherit;
+  }
+
+/* uniform top spacing for every nutrient row */
+.daily-value p {
+  margin-top: 2px;
+}
+.daily-value p.right {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  font-size: 0.75rem;
+}
+
+.daily-value p.indent {
+  margin-left: 1em;
+  width: calc(100% - 1em);
+  padding-bottom: 2px;
+}
+
+.daily-value p.double-indent {
+  margin-left: 2em;
+  width: calc(100% - 2em);
+}
+
+.shortened {
+  margin-left: 2em;
+  width: calc(100% - 2em);
+  border-bottom: 1px solid #888989;
+}
+
+.daily-value p:not(.no-divider) {
+  border-bottom: 1px solid #888989;
+  padding-bottom: 2px;
+}
+/* rows that omit the bottom border still need the same breathing‑room */
+.daily-value p.no-divider {
+  padding-bottom: 2px;
+}
+.daily-value p:last-of-type {
+  border-bottom: none;
+}
+
+.note {
+  font-size: 0.6rem;
+  margin: 5px 0;
+  padding: 0 8px;
+  text-indent: -8px;
+}
+/* ─────────────────────────────────────────────────────────────────────────────
+   END: “Classic” Nutrition Facts CSS
+───────────────────────────────────────────────────────────────────────────── */
+.label-card {
+  padding: 0;
+  box-shadow: none;
+}
+
+    /* Layout form in single column */
+    #nutrition-form {
+      display: block;
+    }
+    #nutrition-form fieldset {
+      margin-bottom: var(--spacing-unit);
+    }
+    #nutrition-form button[type="submit"] {
+      margin-top: 1rem;
+    }
+    /* ------------------------------------------------------------------
+       RESPONSIVE BREAKPOINTS
+    ------------------------------------------------------------------ */
+
+    /* Tablet & small laptops: stack fieldsets, 2-column grids */
+    @media (max-width: 1024px) {
+      /* Stack all fieldsets vertically */
+      #nutrition-form fieldset {
+        display: block !important;
+      }
+      /* Collapse four‑column grids to two columns */
+      #nutrition-form > fieldset:nth-of-type(2),
+      #vitamin-fields {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-unit);
+      }
+      /* Two-column layout for optional vitamins on tablets */
+      #optional-vitamin-fields {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .form-card {
+        padding: var(--spacing-unit);
+      }
+    }
+
+    /* Mobile phones: single-column layout */
+    @media (max-width: 600px) {
+      /* Stack form, but make macros & vitamins 2-column on phones */
+      #nutrition-form {
+        display: block !important;
+      }
+
+      /* Two-column layout for Calories & Macronutrients on mobile */
+      #nutrition-form > fieldset:nth-of-type(2) {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--spacing-unit) !important;
+      }
+
+      /* Two-column layout for vitamins on mobile */
+      #vitamin-fields {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--spacing-unit) !important;
+      }
+
+      /* Two-column layout for optional vitamins on mobile */
+      #optional-vitamin-fields {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      /* Make inputs, selects, buttons full width */
+      input, select, button {
+        width: 100% !important;
+      }
+
+      .label-card {
+        overflow-x: auto;
+      }
+    }
+
+    /* ────────────── Added: Button and Download Buttons Styling ────────────── */
+    #nutrition-form button {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      display: block;
+      margin: 1rem auto 0 auto;
+    }
+
+    #download-buttons {
+      text-align: center;
+    }
+
+    #download-buttons button {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      margin: 0 0.5rem;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <h1>Nutrition Label Input</h1>
+  <div class="form-card">
+    <form id="nutrition-form">
+      <fieldset>
+        <legend>Basic Info</legend>
+        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div>
+            <label for="servingSizeQuantity">Serving Size Quantity</label>
+            <input type="text" id="servingSizeQuantity" name="servingSizeQuantity" placeholder="e.g., 2/3">
+          </div>
+          <div>
+            <label for="servingSizeUnit">Serving Size Unit</label>
+            <input type="text" id="servingSizeUnit" name="servingSizeUnit" placeholder="e.g., cup (55g)">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="servingsPerContainer">Servings Per Container</label>
+          <input type="number" id="servingsPerContainer" name="servingsPerContainer">
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Calories & Macronutrients</legend>
+        <div class="form-group">
+          <label for="calories">Calories</label>
+          <input type="number" id="calories" name="calories">
+        </div>
+        <div class="form-group">
+          <label for="totalFat">Total Fat (g)</label>
+          <input type="number" id="totalFat" name="totalFat">
+        </div>
+        <div class="form-group">
+          <label for="saturatedFat">Saturated Fat (g)</label>
+          <input type="number" id="saturatedFat" name="saturatedFat">
+        </div>
+        <div class="form-group">
+          <label for="transFat">Trans Fat (g)</label>
+          <input type="number" id="transFat" name="transFat">
+        </div>
+        <div class="form-group">
+          <label for="polyunsaturatedFat">Polyunsaturated Fat (g)</label>
+          <input type="number" id="polyunsaturatedFat" name="polyunsaturatedFat">
+        </div>
+        <div class="form-group">
+          <label for="monounsaturatedFat">Monounsaturated Fat (g)</label>
+          <input type="number" id="monounsaturatedFat" name="monounsaturatedFat">
+        </div>
+        <div class="form-group">
+          <label for="sugarAlcohol">Sugar Alcohol (g)</label>
+          <input type="number" id="sugarAlcohol" name="sugarAlcohol">
+        </div>
+        <div class="form-group">
+          <label for="cholesterol">Cholesterol (mg)</label>
+          <input type="number" id="cholesterol" name="cholesterol">
+        </div>
+        <div class="form-group">
+          <label for="sodium">Sodium (mg)</label>
+          <input type="number" id="sodium" name="sodium">
+        </div>
+        <div class="form-group">
+          <label for="totalCarbs">Total Carbohydrate (g)</label>
+          <input type="number" id="totalCarbs" name="totalCarbs">
+        </div>
+        <div class="form-group">
+          <label for="dietaryFiber">Dietary Fiber (g)</label>
+          <input type="number" id="dietaryFiber" name="dietaryFiber">
+        </div>
+        <div class="form-group">
+          <label for="totalSugars">Total Sugars (g)</label>
+          <input type="number" id="totalSugars" name="totalSugars">
+        </div>
+        <div class="form-group">
+          <label for="addedSugars">Added Sugars (g)</label>
+          <input type="number" id="addedSugars" name="addedSugars">
+        </div>
+        <div class="form-group">
+          <label for="protein">Protein (g)</label>
+          <input type="number" id="protein" name="protein">
+          <label style="margin-top:0.5rem; display:block;">
+            <input type="checkbox" id="hideProteinDV" name="hideProteinDV">
+            Hide Protein % Daily Value
+          </label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Vitamins & Minerals</legend>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="includeVitamins" name="includeVitamins">
+            Include Vitamins
+          </label>
+        </div>
+        <div id="vitamins-container" style="display: none;">
+          <div class="form-group" style="grid-column: 1 / -1; margin: 1rem 0;">
+            <hr style="border: none; border-top: 2px solid #ccc; margin: 0; width: 100%;">
+          </div>
+          <div class="form-group">
+            <label for="vitaminFormat">Vitamin Data Format</label>
+            <select id="vitaminFormat" name="vitaminFormat">
+              <option value="percentage">Percentage</option>
+              <option value="units">Units of Measure</option>
+            </select>
+          </div>
+          <div id="vitamin-fields">
+            <div>
+              <label for="vitaminD" id="label-vitaminD">Vitamin D (mcg)</label>
+              <input type="number" id="vitaminD" name="vitaminD">
+            </div>
+            <div>
+              <label for="calcium" id="label-calcium">Calcium (mg)</label>
+              <input type="number" id="calcium" name="calcium">
+            </div>
+            <div>
+              <label for="iron" id="label-iron">Iron (mg)</label>
+              <input type="number" id="iron" name="iron">
+            </div>
+            <div>
+              <label for="potassium" id="label-potassium">Potassium (mg)</label>
+              <input type="number" id="potassium" name="potassium">
+            </div>
+            <div style="grid-column: 1 / -1;">
+              <label><input type="checkbox" id="showOptionalVitamins" name="showOptionalVitamins"> Show Optional Vitamins</label>
+            </div>
+            <div id="optional-vitamin-fields" style="display:none; margin-top:1rem; grid-column: 1 / -1;">
+              <!-- Units toggle -->
+              <div>
+                <label><input type="checkbox" id="showVitaminUnits" name="showVitaminUnits"> Show units next to vitamin names</label>
+              </div>
+              <!-- Optional vitamin inputs -->
+              <div>
+                <label for="vitaminA" id="label-vitaminA">Vitamin A (%)</label>
+                <input type="number" id="vitaminA" name="vitaminA">
+              </div>
+              <div>
+                <label for="vitaminC" id="label-vitaminC">Vitamin C (%)</label>
+                <input type="number" id="vitaminC" name="vitaminC">
+              </div>
+              <div>
+                <label for="vitaminE" id="label-vitaminE">Vitamin E (%)</label>
+                <input type="number" id="vitaminE" name="vitaminE">
+              </div>
+              <div>
+                <label for="vitaminK" id="label-vitaminK">Vitamin K (%)</label>
+                <input type="number" id="vitaminK" name="vitaminK">
+              </div>
+              <div>
+                <label for="thiamin" id="label-thiamin">Thiamin (%)</label>
+                <input type="number" id="thiamin" name="thiamin">
+              </div>
+              <div>
+                <label for="riboflavin" id="label-riboflavin">Riboflavin (%)</label>
+                <input type="number" id="riboflavin" name="riboflavin">
+              </div>
+              <div>
+                <label for="niacin" id="label-niacin">Niacin (%)</label>
+                <input type="number" id="niacin" name="niacin">
+              </div>
+              <div>
+                <label for="vitaminB6" id="label-vitaminB6">Vitamin B6 (%)</label>
+                <input type="number" id="vitaminB6" name="vitaminB6">
+              </div>
+              <div>
+                <label for="folate" id="label-folate">Folate (%)</label>
+                <input type="number" id="folate" name="folate">
+              </div>
+              <div>
+                <label for="folicAcid" id="label-folicAcid">Folic Acid (mcg)</label>
+                <input type="number" id="folicAcid" name="folicAcid">
+              </div>
+              <div>
+                <label for="vitaminB12" id="label-vitaminB12">Vitamin B12 (%)</label>
+                <input type="number" id="vitaminB12" name="vitaminB12">
+              </div>
+              <div>
+                <label for="biotin" id="label-biotin">Biotin (%)</label>
+                <input type="number" id="biotin" name="biotin">
+              </div>
+              <div>
+                <label for="pantothenicAcid" id="label-pantothenicAcid">Pantothenic Acid (%)</label>
+                <input type="number" id="pantothenicAcid" name="pantothenicAcid">
+              </div>
+              <div>
+                <label for="phosphorus" id="label-phosphorus">Phosphorus (%)</label>
+                <input type="number" id="phosphorus" name="phosphorus">
+              </div>
+              <div>
+                <label for="iodine" id="label-iodine">Iodine (%)</label>
+                <input type="number" id="iodine" name="iodine">
+              </div>
+              <div>
+                <label for="magnesium" id="label-magnesium">Magnesium (%)</label>
+                <input type="number" id="magnesium" name="magnesium">
+              </div>
+              <div>
+                <label for="zinc" id="label-zinc">Zinc (%)</label>
+                <input type="number" id="zinc" name="zinc">
+              </div>
+              <div>
+                <label for="selenium" id="label-selenium">Selenium (%)</label>
+                <input type="number" id="selenium" name="selenium">
+              </div>
+              <div>
+                <label for="copper" id="label-copper">Copper (%)</label>
+                <input type="number" id="copper" name="copper">
+              </div>
+              <div>
+                <label for="manganese" id="label-manganese">Manganese (%)</label>
+                <input type="number" id="manganese" name="manganese">
+              </div>
+              <div>
+                <label for="chromium" id="label-chromium">Chromium (%)</label>
+                <input type="number" id="chromium" name="chromium">
+              </div>
+              <div>
+                <label for="molybdenum" id="label-molybdenum">Molybdenum (%)</label>
+                <input type="number" id="molybdenum" name="molybdenum">
+              </div>
+              <div>
+                <label for="chloride" id="label-chloride">Chloride (%)</label>
+                <input type="number" id="chloride" name="chloride">
+              </div>
+            </div>
+          </div>
+        </div> <!-- end #vitamins-container -->
+      </fieldset>
+      <button type="submit">Generate Labels</button>
+    </form>
+  </div>
+  <div class="label-card">
+    <div id="label-output"></div>
+  </div>
+  <div id="download-buttons" style="margin-top: 1rem;">
+    <button id="download-png">Download PNG</button>
+    <button id="download-pdf">Download PDF</button>
+  </div>
+
+  <script>
+    function calculateDailyValue(nutrient, value) {
+      const dv = {
+        totalFat: 78,           // grams
+        saturatedFat: 20,       // grams
+        cholesterol: 300,       // mg
+        sodium: 2300,           // mg
+        totalCarbs: 275,        // grams
+        dietaryFiber: 28,       // grams
+        addedSugars: 50,        // grams
+        protein: 50,            // grams
+
+        vitaminA: 900,          // mcg RAE
+        vitaminC: 90,           // mg
+        vitaminD: 20,           // mcg
+        vitaminE: 15,           // mg alpha-tocopherol
+        vitaminK: 120,          // mcg
+        thiamin: 1.2,           // mg
+        riboflavin: 1.3,        // mg
+        niacin: 16,             // mg NE
+        vitaminB6: 1.7,         // mg
+        folate: 400,            // mcg DFE
+        folicAcid: 400,         // mcg DFE
+        vitaminB12: 2.4,        // mcg
+        biotin: 30,             // mcg
+        pantothenicAcid: 5,     // mg
+        phosphorus: 1250,       // mg
+        iodine: 150,            // mcg
+        magnesium: 420,         // mg
+        zinc: 11,               // mg
+        selenium: 55,           // mcg
+        copper: 0.9,            // mg
+        manganese: 2.3,         // mg
+        chromium: 35,           // mcg
+        molybdenum: 45,         // mcg
+        chloride: 2300,         // mg
+        choline: 550            // mg
+      };
+      const base = dv[nutrient];
+      if (!base || !value) return '';
+      const percent = Math.round((parseFloat(value) / base) * 100);
+      return `${percent}%`;
+    }
+
+
+    // Update all vitamin labels when the format selector changes
+    document.getElementById('vitaminFormat').addEventListener('change', function() {
+      const fmt = this.value;  // "percentage" or "units"
+
+      // Main vitamins
+      const mainLabels = {
+        vitaminD:    fmt === 'percentage' ? 'Vitamin D (%)'    : 'Vitamin D (mcg)',
+        calcium:     fmt === 'percentage' ? 'Calcium (%)'       : 'Calcium (mg)',
+        iron:        fmt === 'percentage' ? 'Iron (%)'          : 'Iron (mg)',
+        potassium:   fmt === 'percentage' ? 'Potassium (%)'     : 'Potassium (mg)'
+      };
+
+      // Optional vitamins
+      const optionalLabels = {
+        vitaminA:          ['Vitamin A (%)',           'Vitamin A (mcg)'],
+        vitaminC:          ['Vitamin C (%)',           'Vitamin C (mg)'],
+        vitaminE:          ['Vitamin E (%)',           'Vitamin E (mg)'],
+        vitaminK:          ['Vitamin K (%)',           'Vitamin K (mcg)'],
+        thiamin:           ['Thiamin (%)',             'Thiamin (mg)'],
+        riboflavin:        ['Riboflavin (%)',          'Riboflavin (mg)'],
+        niacin:            ['Niacin (%)',              'Niacin (mg)'],
+        vitaminB6:         ['Vitamin B6 (%)',          'Vitamin B6 (mg)'],
+        folate:            ['Folate (%)',              'Folate (mcg DFE)'],
+        vitaminB12:        ['Vitamin B12 (%)',         'Vitamin B12 (mcg)'],
+        biotin:            ['Biotin (%)',              'Biotin (mcg)'],
+        pantothenicAcid:   ['Pantothenic Acid (%)',    'Pantothenic Acid (mg)'],
+        phosphorus:        ['Phosphorus (%)',          'Phosphorus (mg)'],
+        iodine:            ['Iodine (%)',              'Iodine (mcg)'],
+        magnesium:         ['Magnesium (%)',           'Magnesium (mg)'],
+        zinc:              ['Zinc (%)',                'Zinc (mg)'],
+        selenium:          ['Selenium (%)',            'Selenium (mcg)'],
+        copper:            ['Copper (%)',              'Copper (mg)'],
+        manganese:         ['Manganese (%)',           'Manganese (mg)'],
+        chromium:          ['Chromium (%)',            'Chromium (mcg)'],
+        molybdenum:        ['Molybdenum (%)',          'Molybdenum (mcg)'],
+        chloride:          ['Chloride (%)',            'Chloride (mg)']
+      };
+
+      // Apply updates to main vitamins
+      Object.entries(mainLabels).forEach(([key, text]) => {
+        const lbl = document.getElementById(`label-${key}`);
+        if (lbl) lbl.textContent = text;
+      });
+
+      // Apply updates to optional vitamins
+      Object.entries(optionalLabels).forEach(([key, [percText, unitText]]) => {
+        const lbl = document.getElementById(`label-${key}`);
+        if (lbl) lbl.textContent = fmt === 'percentage' ? percText : unitText;
+      });
+    });
+
+    // Initialize labels on page load
+    document.getElementById('vitaminFormat').dispatchEvent(new Event('change'));
+
+    // Toggle optional vitamins fields
+    document.getElementById('showOptionalVitamins').addEventListener('change', function() {
+      const wrapper = document.getElementById('optional-vitamin-fields');
+      if (this.checked) {
+        wrapper.style.display = '';   // clear inline to revert to CSS grid
+      } else {
+        wrapper.style.display = 'none';
+      }
+    });
+
+    // Toggle visibility of vitamins section based on Include Vitamins checkbox
+    const includeCheckbox = document.getElementById('includeVitamins');
+    const vitaminsContainer = document.getElementById('vitamins-container');
+    function toggleVitaminsContainer() {
+      vitaminsContainer.style.display = includeCheckbox.checked ? '' : 'none';
+    }
+    includeCheckbox.addEventListener('change', toggleVitaminsContainer);
+    // Initialize on page load
+    toggleVitaminsContainer();
+
+
+    document.getElementById('nutrition-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const form = new FormData(this);
+      const values = Object.fromEntries(form.entries());
+      values.hideProteinDV = form.has('hideProteinDV');
+      values.showOptionalVitamins = form.has('showOptionalVitamins');
+      values.showVitaminUnits = form.has('showVitaminUnits');
+      values.includeVitamins = form.has('includeVitamins');
+
+      // Determine whether user input is %DV or units from the Vitamin Data Format dropdown
+      const inputFormat = values.vitaminFormat || 'percentage';
+      const nutrientBases = {
+        vitaminD: 20, calcium: 1300, iron: 18, potassium: 4700,
+        vitaminA: 900, vitaminC: 90, vitaminE: 15, vitaminK: 120,
+        thiamin: 1.2, riboflavin: 1.3, niacin: 16, vitaminB6: 1.7,
+        folate: 400, vitaminB12: 2.4, biotin: 30,
+        pantothenicAcid: 5, phosphorus: 1250, iodine: 150, magnesium: 420,
+        zinc: 11, selenium: 55, copper: 0.9, manganese: 2.3,
+        chromium: 35, molybdenum: 45, chloride: 2300
+      };
+      Object.keys(nutrientBases).forEach(nutrient => {
+        const raw = parseFloat(values[nutrient]);
+        if (isNaN(raw)) return;
+        if (inputFormat === 'percentage') {
+          // raw is %DV: store percent directly, compute units
+          values[`${nutrient}_percent`] = raw;
+          values[`${nutrient}_unit`] = Math.round((raw / 100) * nutrientBases[nutrient] * 100) / 100;
+        } else {
+          // raw is unit: store units directly, compute %DV
+          values[`${nutrient}_unit`] = raw;
+          values[`${nutrient}_percent`] = Math.round((raw / nutrientBases[nutrient]) * 100);
+        }
+      });
+      // Folic Acid: no conversion, use raw mcg input
+      if (!isNaN(parseFloat(values.folicAcid))) {
+        values.folicAcid_unit = parseFloat(values.folicAcid);
+      }
+
+      const label = document.createElement('div');
+      label.className = 'label';
+
+      label.innerHTML = `
+        <header>
+          <h1 class="bold">Nutrition Facts</h1>
+          <div class="divider"></div>
+          <p>${values.servingsPerContainer || 0} servings per container</p>
+          <p class="bold">Serving size <span>${values.servingSizeQuantity || ''} ${values.servingSizeUnit || ''}</span></p>
+        </header>
+
+        <div class="divider large"></div>
+
+        <div class="calories-info">
+          <div class="left-container">
+            <h2 class="bold small-text">Amount per serving</h2>
+            <p>Calories</p>
+          </div>
+          <span>${values.calories}</span>
+        </div>
+
+        <div class="divider medium"></div>
+
+        <div class="daily-value small-text">
+          <p class="bold right no-divider">% Daily Value *</p>
+          <div class="divider"></div>
+
+          <p>
+            <span><span class="bold">Total Fat</span> ${values.totalFat || 0}g</span>
+            <span class="bold">${calculateDailyValue('totalFat', values.totalFat)}</span>
+          </p>
+
+          <p class="indent no-divider">
+            Saturated Fat ${values.saturatedFat || 0}g
+            <span class="bold">${calculateDailyValue('saturatedFat', values.saturatedFat)}</span>
+          </p>
+          <div class="divider"></div>
+
+          <p class="indent no-divider">
+            <span><em>Trans</em> Fat ${values.transFat || 0}g</span>
+          </p>
+          <div class="divider"></div>
+          ${values.polyunsaturatedFat
+            ? `
+              <p class="indent no-divider">
+                <span>Polyunsaturated Fat ${values.polyunsaturatedFat || 0}g</span>
+              </p>
+              <div class="divider"></div>
+            `
+            : ``
+          }
+          ${values.monounsaturatedFat
+            ? `
+              <p class="indent no-divider">
+                <span>Monounsaturated Fat ${values.monounsaturatedFat || 0}g</span>
+              </p>
+              <div class="divider"></div>
+            `
+            : ``
+          }
+
+          <p>
+            <span><span class="bold">Cholesterol</span> ${values.cholesterol || 0}mg</span>
+            <span class="bold">${calculateDailyValue('cholesterol', values.cholesterol)}</span>
+          </p>
+
+          <p>
+            <span><span class="bold">Sodium</span> ${values.sodium || 0}mg</span>
+            <span class="bold">${calculateDailyValue('sodium', values.sodium)}</span>
+          </p>
+
+          <p>
+            <span><span class="bold">Total Carbohydrate</span> ${values.totalCarbs || 0}g</span>
+            <span class="bold">${calculateDailyValue('totalCarbs', values.totalCarbs)}</span>
+          </p>
+
+          <p class="indent no-divider">
+            Dietary Fiber ${values.dietaryFiber || 0}g
+            <span class="bold">${calculateDailyValue('dietaryFiber', values.dietaryFiber)}</span>
+          </p>
+          <div class="divider"></div>
+
+          <p class="indent no-divider">
+            Total Sugars ${values.totalSugars || 0}g
+          </p>
+          <div class="shortened"></div>
+
+          <p class="double-indent no-divider">
+            Includes ${values.addedSugars || 0}g Added Sugars
+            <span class="bold">${calculateDailyValue('addedSugars', values.addedSugars)}</span>
+          </p>
+          <div class="divider"></div>
+          ${values.sugarAlcohol
+            ? `
+              <p class="indent no-divider">
+                Sugar Alcohol ${values.sugarAlcohol || 0}g
+              </p>
+              <div class="divider"></div>
+            `
+            : ``
+          }
+
+          <p class="no-divider">
+            <span><span class="bold">Protein</span> ${values.protein || 0}g</span>
+            ${!values.hideProteinDV 
+              ? `<span class="bold">${calculateDailyValue('protein', values.protein)}</span>`
+              : ``
+            }
+          </p>
+          <div class="divider large"></div>
+          ${
+            values.includeVitamins
+              ? `
+                <p>
+                  Vitamin D ${values.vitaminD_unit || 0}mcg
+                  <span>${values.vitaminD_percent || 0}%</span>
+                </p>
+                <p>
+                  Calcium ${values.calcium_unit || 0}mg
+                  <span>${values.calcium_percent || 0}%</span>
+                </p>
+                <p>
+                  Iron ${values.iron_unit || 0}mg
+                  <span>${values.iron_percent || 0}%</span>
+                </p>
+                <p class="no-divider">
+                  Potassium ${values.potassium_unit || 0}mg
+                  <span>${values.potassium_percent || 0}%</span>
+                </p>
+              `
+              : `
+                <p class="no-divider" style="font-size: 0.6rem;">
+                  Not a significant source of vitamin D, calcium, iron, and potassium
+                </p>
+                <div class="divider"></div>
+              `
+          }
+          ${
+            values.showOptionalVitamins ? `
+            <div class="divider"></div>
+              ${ values.vitaminA_unit ? `
+                <p>
+                  Vitamin A ${values.showVitaminUnits ? values.vitaminA_unit + 'mcg' : ''} <span>${values.vitaminA_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.vitaminC_unit ? `
+                <p>
+                  Vitamin C ${values.showVitaminUnits ? values.vitaminC_unit + 'mg' : ''} <span>${values.vitaminC_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.vitaminE_unit ? `
+                <p>
+                  Vitamin E ${values.showVitaminUnits ? values.vitaminE_unit + 'mg' : ''} <span>${values.vitaminE_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.vitaminK_unit ? `
+                <p>
+                  Vitamin K ${values.showVitaminUnits ? values.vitaminK_unit + 'mcg' : ''} <span>${values.vitaminK_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.thiamin_unit ? `
+                <p>
+                  Thiamin ${values.showVitaminUnits ? values.thiamin_unit + 'mg' : ''} <span>${values.thiamin_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.riboflavin_unit ? `
+                <p>
+                  Riboflavin ${values.showVitaminUnits ? values.riboflavin_unit + 'mg' : ''} <span>${values.riboflavin_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.niacin_unit ? `
+                <p>
+                  Niacin ${values.showVitaminUnits ? values.niacin_unit + 'mg' : ''} <span>${values.niacin_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.vitaminB6_unit ? `
+                <p>
+                  Vitamin B6 ${values.showVitaminUnits ? values.vitaminB6_unit + 'mg' : ''} <span>${values.vitaminB6_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.folate_unit ? `
+                <p class="no-divider">
+                  Folate ${values.showVitaminUnits ? values.folate_unit + 'mcg DFE' : ''} <span>${values.folate_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.folicAcid_unit ? `
+                <p>
+                  &nbsp;&nbsp;(${values.folicAcid_unit}mcg folic acid)
+                </p>
+              ` : `` }
+              ${ values.vitaminB12_unit ? `
+                <p>
+                  Vitamin B12 ${values.showVitaminUnits ? values.vitaminB12_unit + 'mcg' : ''} <span>${values.vitaminB12_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.biotin_unit ? `
+                <p>
+                  Biotin ${values.showVitaminUnits ? values.biotin_unit + 'mcg' : ''} <span>${values.biotin_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.pantothenicAcid_unit ? `
+                <p>
+                  Pantothenic Acid ${values.showVitaminUnits ? values.pantothenicAcid_unit + 'mg' : ''} <span>${values.pantothenicAcid_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.phosphorus_unit ? `
+                <p>
+                  Phosphorus ${values.showVitaminUnits ? values.phosphorus_unit + 'mg' : ''} <span>${values.phosphorus_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.iodine_unit ? `
+                <p>
+                  Iodine ${values.showVitaminUnits ? values.iodine_unit + 'mcg' : ''} <span>${values.iodine_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.magnesium_unit ? `
+                <p>
+                  Magnesium ${values.showVitaminUnits ? values.magnesium_unit + 'mg' : ''} <span>${values.magnesium_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.zinc_unit ? `
+                <p>
+                  Zinc ${values.showVitaminUnits ? values.zinc_unit + 'mg' : ''} <span>${values.zinc_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.selenium_unit ? `
+                <p>
+                  Selenium ${values.showVitaminUnits ? values.selenium_unit + 'mcg' : ''} <span>${values.selenium_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.copper_unit ? `
+                <p>
+                  Copper ${values.showVitaminUnits ? values.copper_unit + 'mg' : ''} <span>${values.copper_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.manganese_unit ? `
+                <p>
+                  Manganese ${values.showVitaminUnits ? values.manganese_unit + 'mg' : ''} <span>${values.manganese_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.chromium_unit ? `
+                <p>
+                  Chromium ${values.showVitaminUnits ? values.chromium_unit + 'mcg' : ''} <span>${values.chromium_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.molybdenum_unit ? `
+                <p>
+                  Molybdenum ${values.showVitaminUnits ? values.molybdenum_unit + 'mcg' : ''} <span>${values.molybdenum_percent}%</span>
+                </p>
+              ` : `` }
+              ${ values.chloride_unit ? `
+                <p class="no-divider">
+                  Chloride ${values.showVitaminUnits ? values.chloride_unit + 'mg' : ''} <span>${values.chloride_percent}%</span>
+                </p>
+              ` : `` }
+            ` : `` }
+        </div>
+
+        ${
+          values.includeVitamins
+            ? `<div class="divider medium"></div>`
+            : ``
+        }
+
+        <p class="note">
+          * The % Daily Value (DV) tells you how much a nutrient in a serving of food
+          contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.
+        </p>
+      `;
+
+      const output = document.getElementById('label-output');
+      output.innerHTML = '';
+      output.appendChild(label);
+
+      // Download PNG (white background)
+      document.getElementById('download-png').onclick = () => {
+        html2canvas(label, { backgroundColor: '#ffffff' }).then(canvas => {
+          const link = document.createElement('a');
+          link.download = 'nutrition-label.png';
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+        });
+      };
+      // Download vector PDF via Puppeteer service
+      document.getElementById('download-pdf').onclick = async () => {
+        // Collect all inline <style> and external stylesheet <link> tags so the PDF keeps identical CSS
+        const styleTags = [...document.head.querySelectorAll('style, link[rel="stylesheet"]')]
+                          .map(tag => tag.outerHTML).join('\n');
+
+        // Build a minimal HTML document containing just the label, and add a <base> tag for correct font URLs
+        const htmlDoc = `
+          <!doctype html>
+          <html>
+           <head>
+            <base href="${window.location.origin}/">
+            <meta charset="utf-8">
+            ${styleTags}
+            <style>
+              body { margin: 0; }
+              .pdf-wrapper {
+                padding: 8px;                    /* 8px on every side */
+                display: inline-block;
+                background: white;               /* ensure a white backdrop */
+              }
+              @page { margin: 0; }        /* no extra printer margin */
+            </style>
+           </head>
+           <body>
+            <div class="pdf-wrapper">
+              ${document.getElementById('label-output').innerHTML}
+            </div>
+           </body>
+          </html>`;
+
+        // Call the local Puppeteer micro‑service
+        const resp = await fetch('http://localhost:4000/api/pdf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ html: htmlDoc })
+        });
+        if (!resp.ok) {
+          alert('PDF service error: ' + (await resp.text()));
+          return;
+        }
+
+        // Trigger browser download
+        const blob = await resp.blob();
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'nutrition-label.pdf';
+        link.click();
+      };
+    });
+  </script>
+</body>
+</html>
+
