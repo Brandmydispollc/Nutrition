@@ -14,6 +14,9 @@ app.post('/api/pdf', async (req, res) => {
     const { html } = req.body;
     if (!html) return res.status(400).send('Missing HTML');
 
+    console.log('Puppeteer executablePath():', puppeteer.executablePath());
+    console.log('PUPPETEER_CACHE_DIR env:', process.env.PUPPETEER_CACHE_DIR);
+
     const browser = await puppeteer.launch({
       args: ['--no-sandbox']
     });
