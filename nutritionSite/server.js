@@ -22,8 +22,11 @@ app.post('/api/pdf', async (req, res) => {
     const chromePaths = [
       process.env.CHROME_PATH,
       '/usr/bin/google-chrome-stable',
+      '/usr/bin/google-chrome',
+      '/usr/bin/chrome',
       '/usr/bin/chromium-browser',
-      '/usr/bin/chromium'
+      '/usr/bin/chromium',
+      '/usr/bin/headless-shell'
     ].filter(Boolean);
 
     let executablePath = null;
