@@ -17,8 +17,10 @@ app.post('/api/pdf', async (req, res) => {
     console.log('Puppeteer executablePath():', puppeteer.executablePath());
     console.log('PUPPETEER_CACHE_DIR env:', process.env.PUPPETEER_CACHE_DIR);
 
+    // On Render, use the system’s Chrome install
     const browser = await puppeteer.launch({
-      args: ['--no-sandbox']
+      executablePath: '/usr/bin/google-chrome-stable',
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
     });
     const page    = await browser.newPage();
     await page.setContent(html, { waitUntil: 'networkidle0' });
