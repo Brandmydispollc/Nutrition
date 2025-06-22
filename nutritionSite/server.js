@@ -15,7 +15,7 @@ app.post('/api/pdf', async (req, res) => {
     if (!html) return res.status(400).send('Missing HTML');
 
     const browser = await puppeteer.launch({
-      executablePath: process.env.CHROME_PATH || '/usr/bin/chromium-browser',
+      executablePath: puppeteer.executablePath(),
       args: ['--no-sandbox']
     });
     const page    = await browser.newPage();
