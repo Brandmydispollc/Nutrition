@@ -4,6 +4,8 @@
 # 1. Base image with Node.js
 FROM node:18-slim
 
+EXPOSE $PORT
+
 # 2. Install system Chromium so Puppeteer can find a headless browser
 RUN apt-get update && \
     apt-get install -y chromium && \
