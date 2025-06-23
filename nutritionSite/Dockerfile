@@ -7,6 +7,8 @@ FROM node:18-slim
 ENV PORT=10000
 EXPOSE 10000
 
+HEALTHCHECK --interval=30s --timeout=5s CMD curl -f http://localhost:10000/healthz || exit 1
+
 # 2. Install system Chromium so Puppeteer can find a headless browser
 RUN apt-get update && \
     apt-get install -y chromium && \
