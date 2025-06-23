@@ -4,7 +4,8 @@
 # 1. Base image with Node.js
 FROM node:18-slim
 
-EXPOSE $PORT
+ENV PORT=10000
+EXPOSE 10000
 
 # 2. Install system Chromium so Puppeteer can find a headless browser
 RUN apt-get update && \
@@ -26,7 +27,6 @@ RUN npm ci
 COPY . .
 
 # 7. Expose the port your server uses (match server.js)
-EXPOSE 4000
 
 # 8. Start the service
 CMD ["node", "server.js"]
