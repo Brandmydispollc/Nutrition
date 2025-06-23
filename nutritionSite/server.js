@@ -73,8 +73,10 @@ app.post('/api/pdf', async (req, res) => {
 // health-check endpoint
 app.get('/healthz', (_req, res) => res.sendStatus(200));
 
-// root-probe for Render
-app.get('/', (_req, res) => res.sendStatus(200));
+// serve client HTML
+app.get('/', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'index', 'index.html'));
+});
 
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
